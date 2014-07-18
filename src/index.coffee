@@ -12,7 +12,7 @@ module.exports = firebase_cell = ( firebase_ref ) ->
   handler           = null
   ensure_subscribed = -> handler ?= ref.on 'value', (snap) -> syncified_cell snap.val()
   cell = ->
-    console.log 'newww'
+
     throw new Error 'cell was destroyed' if destroyed
     a = arguments
 
