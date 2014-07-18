@@ -1,0 +1,1 @@
+Firebase + https://github.com/aldonline/reactivity/wiki/Cell
