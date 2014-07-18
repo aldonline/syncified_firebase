@@ -1,6 +1,6 @@
 {
   "name": "syncified_firebase",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Aldo Bucchi <aldo.bucchi@gmail.com>",
   "main": "lib/index.js",
   "scripts": {
