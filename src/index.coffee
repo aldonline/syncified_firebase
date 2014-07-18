@@ -12,20 +12,30 @@ module.exports = firebase_cell = ( firebase_ref ) ->
   handler           = null
   ensure_subscribed = -> handler ?= ref.on 'value', (snap) -> syncified_cell snap.val()
   cell = ->
+    console.log 'newww'
     throw new Error 'cell was destroyed' if destroyed
-    if arguments.length > 0 # setting a value
-      [new_value, priority] = arguments
-      # you can pass a second argument. will be used as priority
-      if priority?
-        ref.setWithPriority new_value, priority
-      else
-        ref.set new_value
-      # return undefined to conform to the cell spec
-      # https://github.com/aldonline/reactivity/wiki/Cell
-      undefined 
-    else # getting a value
-      ensure_subscribed()
-      syncified_cell()
+    a = arguments
+
+    # first lets catch all cases in which the first argument
+    # is an error. we do nothing since
+    # it makes no sense to put an error
+    # on a remote firebase reference
+    return undefined if a[0] instanceof Error
+
+    switch a.length
+      when 0 # cell()
+        ensure_subscribed()
+        syncified_cell()
+      when 1 # cell( err_or_value )
+        ref.set a[0]
+        undefined
+      when 2 # cell( err, value )
+        ref.set a[1]
+        undefined
+      when 3 # cell( err, value, priority )
+        ref.setWithPriority a[1], a[2]
+        undefined
+
   cell.destroy = ->
     destroyed = yes
     syncified_cell.destroy()
